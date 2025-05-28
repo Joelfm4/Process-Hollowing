@@ -9,11 +9,6 @@
                                                                                    |___/ 
 ```
 
- <p align="center">
-    <img src="https://img.shields.io/badge/language-C%2B%2B-%23f34b7d.svg?style=for-the-badge&logo=appveyor" alt="C++">
-    <img src="https://img.shields.io/badge/platform-Windows-0078d7.svg?style=for-the-badge&logo=appveyor" alt="Windows">
-</p>
-
 ## Project Overview
 This project is a simple implementation of process hollowing written in C++.
 
