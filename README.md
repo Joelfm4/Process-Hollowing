@@ -10,7 +10,7 @@
 ```
 
 ## Project Overview
-This project is a simple implementation of process hollowing written in C++.
+This project is a simple and rudimentary implementation of process hollowing written in C++.
 
 ## How it works (Overview)
 - `CreateProcessA`: Creates a new process in a suspended state.
@@ -19,6 +19,3 @@ This project is a simple implementation of process hollowing written in C++.
 - `GetThreadContext`: Retrieves the context (registers, etc.) of the main thread of the target process.
 - `SetThreadContext`: Modifies the thread context to redirect execution to the shellcode.
 - `ResumeThread`: Resumes the suspended thread, effectively executing the injected shellcode.
-
-### Is it detectable?
-Yes
