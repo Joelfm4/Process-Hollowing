@@ -1,9 +1,6 @@
 #include <windows.h>
 #include <winternl.h>
 #include <iostream>
-#include <stdio.h>
-
-#pragma comment(lib, "ntdll.lib")
 
 
 int main(int argc, char** argv) {
